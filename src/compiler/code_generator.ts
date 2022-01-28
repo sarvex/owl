@@ -1125,7 +1125,8 @@ export class CodeGenerator {
     }
 
     if (slotDef && !(ast.dynamicProps || hasSlotsProp)) {
-      props.push(`slots: ${slotDef}`);
+      this.helpers.add("markRaw");
+      props.push(`slots: markRaw(${slotDef})`);
     }
 
     const propStr = `{${props.join(",")}}`;
@@ -1145,7 +1146,8 @@ export class CodeGenerator {
     }
 
     if (slotDef && (ast.dynamicProps || hasSlotsProp)) {
-      this.addLine(`${propVar!}.slots = Object.assign(${slotDef}, ${propVar!}.slots)`);
+      this.helpers.add("markRaw");
+      this.addLine(`${propVar!}.slots = markRaw(Object.assign(${slotDef}, ${propVar!}.slots))`);
     }
 
     // cmap key
